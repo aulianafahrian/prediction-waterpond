@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Peringatan Air Kolam</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+  <div class="container mt-5">
+    <div>
+      <a href="dashboard.html">dashboard</a>
+    </div>
+    <h2 class="mb-4 text-center">💧 Sistem Peringatan Dini Air Kolam</h2>
+    <form method="post">
+      <div class="mb-3">
+        <label class="form-label">pH Air</label>
+        <input type="number" step="0.1" class="form-control" name="ph" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">TDS (ppm)</label>
+        <input type="number" step="1" class="form-control" name="tds" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Suhu Air (°C)</label>
+        <input type="number" step="0.1" class="form-control" name="suhu" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Prediksi</button>
+    </form>
+
+    {% if alerts %}
+    <div class="mt-5">
+      <h4>Prediksi & Alert 12 Jam Ke Depan</h4>
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Jam ke-</th>
+            <th>Waktu</th>
+            <th>pH</th>
+            <th>TDS</th>
+            <th>Suhu</th>
+            <th>Status</th>
+            <th>Probabilitas</th>
+          </tr>
+        </thead>
+        <!-- <tbody>
+          {% for row in alerts %}
+          <tr
+            class="{% if row.status == 'PERLU GANTI AIR' %}table-danger{% elif row.status == 'AMAN' %}table-success{% endif %}">
+            <td>{{ row.jam_ke }}</td>
+            <td>{{ row.waktu }}</td>
+            <td>{{ '%.2f'|format(row.ph) }}</td>
+            <td>{{ '%.2f'|format(row.tds) }}</td>
+            <td>{{ '%.2f'|format(row.suhu) }}</td>
+            <td>{{ row.status }}</td>
+            <td>{{ row.prob }}</td>
+          </tr>
+          {% endfor %}
+           {% for alert in alerts %}
+          {% if alert.status %}
+          <p><strong>{{ alert.status }}</strong></p>
+          {% else %}
+          <tr>
+            <td>{{ alert.jam_ke }}</td>
+            <td>{{ alert.waktu }}</td>
+            <td>{{ '%.2f'|format(row.get('ph', 0)) }}</td>
+            <td>{{ alert.tds }}</td>
+            <td>{{ alert.suhu }}</td>
+            <td>{{ alert.status }}</td>
+            <td>{{ alert.prob }}</td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody> -->
+        <tbody>
+          {% for row in alerts %}
+          {% if row.ph is defined and row.tds is defined and row.suhu is defined %}
+          <tr
+            class="{% if row.status == 'PERLU GANTI AIR' %}table-danger{% elif row.status == 'AMAN' %}table-success{% endif %}">
+            <td>{{ row.jam_ke }}</td>
+            <td>{{ row.waktu }}</td>
+            <td>{{ '%.2f'|format(row.ph) }}</td>
+            <td>{{ '%.2f'|format(row.tds) }}</td>
+            <td>{{ '%.2f'|format(row.suhu) }}</td>
+            <td>{{ row.status }}</td>
+            <td>{{ row.prob }}</td>
+          </tr>
+          {% else %}
+          <tr class="table-warning">
+            <td colspan="7"><strong>{{ row.status }}</strong></td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+
+      </table>
+
+    </div>
+    {% endif %}
+
+  </div>
+</body>
+
+</html>
